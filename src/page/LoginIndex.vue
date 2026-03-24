@@ -37,8 +37,8 @@
                             </el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="SubmitForm(RuleFormRef)" round
-                                class="w-[250px] !text-1xl">登录</el-button>
+                            <el-button type="primary" @click="SubmitForm(RuleFormRef)" round class="w-[250px] !text-xl"
+                                :loading="loading">登录</el-button>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -50,12 +50,14 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { login } from '@/api/manager'
-import { ElNotification } from 'element-plus'
 import { useRouter } from 'vue-router'
+import { setToken } from '@/composable/auth'
+import { Notification } from '@/composable/utility'
 const form = reactive({
     account: '',
     password: '',
 })
+const loading = ref(false)
 const router = useRouter()
 const RuleFormRef = ref()
 const rules = reactive({
@@ -71,36 +73,28 @@ const rules = reactive({
 const SubmitForm = async (FormRef) => {
     if (!FormRef) return
     await FormRef.validate((valid, fields) => {
-        if (valid)
+        if (valid) {
+            loading.value = true
             login(form.account, form.password)
-                .then(res => {
-                    const token = res.data.data.token
-                    console.log(token)
+                .then(loginRes => {
+                    loading.value = true
+                    const token = loginRes.data.token
+                    console.log(loginRes)
 
                     // 提示成功
-                    ElNotification({
-                        message: '登录成功',
-                        type: 'success',
-                        duration: 2000,
-                    })
-                    // 保存token和用户信息
+                    Notification('登录成功')
+
+                    // 保存token 
+                    setToken(token)
 
                     // 跳转到后台首页
                     router.push('/')
 
                 })
-                .catch(err => {
-                    // 读取登录失败信息
-                    const msg = err.response.data.msg
-                    console.log(msg)
-
-                    // 提示失败
-                    ElNotification({
-                        message: msg,
-                        type: 'error',
-                        duration: 2000,
-                    })
+                .finally(() => {
+                    loading.value = false
                 })
+        }
         else
             console.log('error submit!', fields)
     })
