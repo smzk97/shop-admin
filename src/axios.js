@@ -39,7 +39,10 @@ instance.interceptors.response.use(function (response) {
     // 提示失败
     const msg = error.response.data.msg
     console.log(msg)
-    Notification(msg || '请求失败','error')
+    Notification(msg || '请求失败', 'error')
+  
+    // 关闭进度条显示
+    hideFullLoading()
     return Promise.reject(error);
   });
 export default instance

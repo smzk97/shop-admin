@@ -22,7 +22,7 @@ router.beforeEach(async (to, from) => {
     // 防止重复登录
     if(token && to.path == '/login'){
         Notification('请勿重复登录','error')
-        return { path:from.path ? from.path : '/' }
+        return { path:from.path ? from.path : '/home' }
     }
 
     // 如果token存在，获取用户信息

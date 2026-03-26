@@ -90,7 +90,7 @@ const SubmitForm = async (FormRef) => {
                     setToken(token)
 
                     // 跳转到后台首页
-                    router.push('/')
+                    router.push('/home')
 
                 })
                 .finally(() => {
