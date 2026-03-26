@@ -4,7 +4,7 @@
 
 * 项目入口介绍
   
-  ![](C:\Users\31094\Desktop\VueProject\shop-admin\MdImg\1.png)
+  ![](.\MdImg\1.png)
 
 * 文件配置
   
