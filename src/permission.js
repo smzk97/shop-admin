@@ -3,8 +3,15 @@ import { getToken } from '@/composable/auth'
 import { Notification } from '@/composable/utility'
 import { useUserMsgStore } from '@/store/index'
 
-router.beforeEach(async (to,from) => {
+
+// 全局前置守卫
+router.beforeEach(async (to, from) => {
+
+    // 获取token
     const token = getToken()
+
+    // 进度条显示
+    // showFullLoading()
 
     // 权限验证
     if(!token && to.path != '/login'){
@@ -23,4 +30,11 @@ router.beforeEach(async (to,from) => {
         const useStore = useUserMsgStore()
         await useStore.getInfoWrap()
     }
+    document.title = to.meta.title + '-后台管理'
 })
+
+// 全局后置守卫
+// router.afterEach((to, from) => {
+//     // 关闭进度条显示
+//     hideFullLoading()
+// })

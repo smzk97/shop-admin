@@ -1,48 +1,52 @@
-# shop-admin
+## 后台管理项目（前端）
 
-This template should help get you started developing with Vue 3 in Vite.
+* 技术栈：vue3(框架) + vite(启动) + Element-plus(组件库) + axios(请求库) + pinia(状态管理) + windicss(css框架) + vue-router(路由管理) + VueUse(轮子)
 
-## Recommended IDE Setup
+* 项目入口介绍
+  
+  ![](C:\Users\31094\Desktop\VueProject\shop-admin\MdImg\1.png)
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+* 文件配置
+  
+  * `api`：用来统一管理接口请求   =>>>`axios`
+  
+  * `composable`：封装一些公用的方法  =>>>`Element-plus、VueUse`
+  
+  * `page`：可复用的单文件组件 =>>>`vue`
+  
+  * `router`：进行路由管理 =>>>`vue-router`
+  
+  * `store`：进行公有资源管理 =>>>`pinia`
+  
+  * `axios.js`：axios实例的创建，包括拦截器的编写
+  
+  * `permission.js`：全局守卫的编写
 
-## Recommended Browser Setup
+* 功能列表
+  
+  * 登录
+    
+    1. 登录页面
+       
+       这里使用了`Element-plus`的`Layout`布局，将页面分成了两大份，使用了`flex`来管理容器排版，同时使用`windicss`替代传统`css`写法，提升了开发效率。表单使用了`Elment-plus`的组件，同时支持表单本地验证。
+    2. 功能实现
+       
+       使用`axios`进行登录接口的请求，并将相应的接口请求封装在api文件下，将请求得到的token存储在cookie中，并通过拦截器设置每次请求的请求头，携带上cookie中的token；在保存用户信息时，通过在前置守卫中判断是否cookies携带token，来更新用户信息，使用`pinia`将信息保存到缓存中，同时实现了防止用户重复登录的功能；请求成功与否，使用了相应的组件实现了消息的通知；请求成功之后跳转到后台首页。
+  
+  * 退出登录
+    
+    使用相应的组件进行消息弹框提示，点击确定进行接口请求，请求成功之后删除token，删除用户信息，并消息提示，跳转到登录页面。
+  
+  * 全局进度条和动态标题
+    
+    使用`nprogress`包，通过拦截器或者守卫执行相应的逻辑，实现进度条的显示；在router中将标题存储在meta中，并使用守卫动态设置页面标题。
+  
+  * 拦截器和守卫
+    
+    拦截器用来设置每次请求之前需要鞋底的信息，包括cookie和请求头等，同时可以用来处理loading，以及请求成功与否相应的处理；
+    
+    守卫一般用来进行权限验证以及标题的修改
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
 
-## Type Support for `.vue` Imports in TS
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```

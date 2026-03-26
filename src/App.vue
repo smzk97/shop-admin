@@ -1,8 +1,13 @@
-<script setup lang="ts"></script>
+<script setup></script>
 
 <template>
   <routerView></routerView>
 </template>
 
 
-<style scoped></style>
+<style>
+#nprogress .bar {
+  background-color: #f4f4f4 !important;
+  height: 4px !important;
+}
+</style>

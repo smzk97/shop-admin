@@ -1,12 +1,15 @@
 import axios from 'axios'
 import { getToken } from '@/composable/auth'
-import { Notification } from '@/composable/utility'
+import { Notification,showFullLoading,hideFullLoading } from '@/composable/utility'
 const instance = axios.create({
     baseURL: '/api'
 })
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
-    // 在发送请求之前做些什么
+  // 在发送请求之前做些什么
+  
+    // 进度条显示
+    showFullLoading()
     
     // 将token设置到请求头中
     const token = getToken()
@@ -26,7 +29,8 @@ instance.interceptors.response.use(function (response) {
 
     // 对响应数据做点什么
     response = response.data
-
+    // 关闭进度条显示
+    hideFullLoading()
     return response;
   }, function (error) {
     // 超出 2xx 范围的状态码都会触发该函数。

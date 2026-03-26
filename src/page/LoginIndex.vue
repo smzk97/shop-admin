@@ -19,7 +19,8 @@
                 <div>
                     <el-form ref="RuleFormRef" :rules="rules" :model="form" class="w-[250px]">
                         <el-form-item prop="account">
-                            <el-input v-model="form.account" placeholder="请输入账号" type="text">
+                            <el-input v-model="form.account" placeholder="请输入账号" @keyup.enter="SubmitForm(RuleFormRef)"
+                                type="text">
                                 <template #prefix>
                                     <el-icon>
                                         <User />
@@ -28,7 +29,8 @@
                             </el-input>
                         </el-form-item>
                         <el-form-item prop="password">
-                            <el-input v-model="form.password" placeholder="请输入密码" type="password" show-password>
+                            <el-input v-model="form.password" placeholder="请输入密码" @keyup.enter="SubmitForm(RuleFormRef)"
+                                type="password" show-password>
                                 <template #prefix>
                                     <el-icon>
                                         <Lock />
@@ -47,7 +49,7 @@
     </el-row>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, reactive } from 'vue'
 import { login } from '@/api/manager'
 import { useRouter } from 'vue-router'
