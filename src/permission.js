@@ -1,4 +1,5 @@
 import router from '@/router/index'
+import { addRoutes } from '@/router/index'
 import { getToken } from '@/composable/auth'
 import { Notification } from '@/composable/utility'
 import { useUserMsgStore } from '@/store/index'
@@ -14,23 +15,36 @@ router.beforeEach(async (to, from) => {
     // showFullLoading()
 
     // 权限验证
-    if(!token && to.path != '/login'){
-        Notification('请先登录','error')
-        return { path:'/login' }
+    if (!token && to.path != '/login') {
+        Notification('请先登录', 'error')
+        return { path: '/login' }
     }
 
     // 防止重复登录
-    if(token && to.path == '/login'){
-        Notification('请勿重复登录','error')
-        return { path:from.path ? from.path : '/home' }
+    if (token && to.path == '/login') {
+        Notification('请勿重复登录', 'error')
+        return { path: from.path ? from.path : '/home' }
     }
 
+    if (token && to.path == '/')
+        return { path: '/home' }
+
+
+
     // 如果token存在，获取用户信息
-    if(token){
+    let hasNewRoute = false
+    if (token) {
         const useStore = useUserMsgStore()
-        await useStore.getInfoWrap()
+        if (Object.keys(useStore.user).length === 0) {
+            const data = await useStore.getInfoWrap()
+            const menus = data.data.menus
+            hasNewRoute = addRoutes(menus)
+            return hasNewRoute ? { ...to, replace: true } : true
+        }
+
     }
     document.title = to.meta.title + '-后台管理'
+
 })
 
 // 全局后置守卫

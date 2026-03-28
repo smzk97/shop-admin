@@ -7,9 +7,16 @@
             <span>商城后台</span>
         </div>
         <div class="header-second">
-            <el-icon>
-                <Fold />
-            </el-icon>
+            <el-tooltip v-if="useStore.adsideWidth == '250px'" content="折叠菜单" placement="bottom" effect="dark">
+                <el-icon>
+                    <Fold @click="useStore.handleAsideWidth" />
+                </el-icon>
+            </el-tooltip>
+            <el-tooltip v-else content="打开菜单" placement="bottom" effect="dark">
+                <el-icon>
+                    <Expand @click="useStore.handleAsideWidth" />
+                </el-icon>
+            </el-tooltip>
             <el-tooltip content="刷新" placement="bottom" effect="dark">
                 <el-icon>
                     <Refresh @click="Fresh" />
@@ -46,8 +53,7 @@
     </div>
 
     <!-- 抽屉 -->
-    <el-drawer v-model="drawer" title="修改密码" :direction="direction" :before-close="handleClose" size="40%"
-        :close-on-click-modal="false">
+    <admin-Drawer title="修改密码" size="40%" ref="drawerRef">
         <el-form ref="RuleFormRef" :rules="rules" :model="form" label-width="80px">
             <el-form-item prop="prePassword" label="旧密码">
                 <el-input v-model="form.prePassword" placeholder="请输入旧密码" @keyup.enter="SubmitForm(RuleFormRef)"
@@ -64,11 +70,8 @@
                     type="password">
                 </el-input>
             </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="SubmitForm(RuleFormRef)" :loading="loading">确认</el-button>
-            </el-form-item>
         </el-form>
-    </el-drawer>
+    </admin-Drawer>
 
 </template>
 <script setup>
@@ -79,6 +82,7 @@ import { logOut, upDatePassword } from '@/api/manager'
 import { useRouter } from 'vue-router'
 import { removeToken } from '@/composable/auth'
 import { ref, reactive } from 'vue'
+import adminDrawer from './adminDrawer.vue'
 const RuleFormRef = ref()
 const form = reactive({
     prePassword: '',
@@ -96,14 +100,14 @@ const rules = reactive({
         { required: true, message: '请重新输入新密码', trigger: 'blur' },
     ],
 })
-const drawer = ref(false)
 const { isFullscreen, toggle } = useFullscreen()
 const router = useRouter()
 const useStore = useUserMsgStore()
 const userData = useStore.user
-const username = userData.value.data.username
-const avatar = userData.value.data.avatar
+const username = userData.data.username
+const avatar = userData.data.avatar
 const loading = ref(false)
+const drawerRef = ref(null)
 const handleCommand = (command) => {
     switch (command) {
         case "first":
@@ -136,7 +140,7 @@ const SubmitForm = async (FormRef) => {
     })
 }
 function breakDrawer() {
-    drawer.value = true
+    drawerRef.value.open()
 }
 function Fresh() {
     location.reload()

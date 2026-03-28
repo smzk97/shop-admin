@@ -5,7 +5,7 @@
                 <adminHeader></adminHeader>
             </el-header>
             <el-container>
-                <el-aside width="200px">
+                <el-aside :width=store.adsideWidth style="transition: 0.3s">
                     <adminAside></adminAside>
                 </el-aside>
                 <el-main>
@@ -20,4 +20,6 @@
 import adminHeader from '@/components/adminHeader.vue'
 import adminAside from '@/components/adminAside.vue'
 import adminTag from '@/components/adminTag.vue'
+import { useUserMsgStore } from '@/store/index'
+const store = useUserMsgStore()
 </script>
