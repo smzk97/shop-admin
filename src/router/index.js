@@ -15,6 +15,7 @@ const routes = [
     component: HomeIndex,
     name: 'home',
     meta: { title: "首页" },
+    children: [],
   },
   {
     path: '/about',
@@ -177,17 +178,18 @@ const router = createRouter({
 })
 
 // 是否新增路由
-let hasNewRoute = false
+
 export function addRoutes(menus) {
+  let hasNewRoute = false
   const mid = (menus) => {
     menus.forEach((menu) => {
       const item = asyncRoutes.find(e => e.name == menu.frontpath)
-      if (item && !router.hasRoute(item)) {
+      if (item && !router.hasRoute(item.name)) {
         router.addRoute('home', item)
         hasNewRoute = true
       }
       if (menu.child && menu.child.length > 0)
-        addRoutes(menu.child)
+        mid(menu.child)
     })
   }
   mid(menus)

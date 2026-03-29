@@ -10,7 +10,8 @@
                         </el-icon>
                         <span>{{ menu1.name }}</span>
                     </template>
-                    <el-menu-item v-for="(menu2, index2) in menu1.child" :key="index2" :index="menu2.frontpath">
+                    <el-menu-item v-for="(menu2, index2) in menu1.child" :key="index2"
+                        :index="menu2.frontpath == '/' ? '/home' : '/home' + menu2.frontpath">
                         <template #title>
                             <el-icon>
                                 <component :is="menu2.icon"></component>
@@ -20,7 +21,7 @@
                     </el-menu-item>
                 </el-sub-menu>
 
-                <el-sub-menu v-else :index="menu1.frontpath">
+                <el-sub-menu v-else :index="menu1.frontpath == '/' ? '/home' : '/home' + menu1.frontpath">
                     <template #title>
                         <el-icon>
                             <component :is="menu1.icon"></component>
@@ -44,7 +45,7 @@ const defaultActive = ref(route.path)
 const isCollapse = computed(() => { return store.adsideWidth != '250px' })
 const asideMenus = computed(() => { return store.menus })
 function handle(e) {
-    router.push('/home' + e)
+    router.push(e)
 }
 </script>
 <style scoped>

@@ -4,7 +4,7 @@ import { getToken } from '@/composable/auth'
 import { Notification } from '@/composable/utility'
 import { useUserMsgStore } from '@/store/index'
 
-
+let hasGetInfo = false
 // 全局前置守卫
 router.beforeEach(async (to, from) => {
 
@@ -29,8 +29,6 @@ router.beforeEach(async (to, from) => {
     if (token && to.path == '/')
         return { path: '/home' }
 
-
-
     // 如果token存在，获取用户信息
     let hasNewRoute = false
     if (token) {
@@ -39,12 +37,11 @@ router.beforeEach(async (to, from) => {
             const data = await useStore.getInfoWrap()
             const menus = data.data.menus
             hasNewRoute = addRoutes(menus)
-            return hasNewRoute ? { ...to, replace: true } : true
+            // return hasNewRoute ? { ...to, replace: true } : true
+            return { ...to, replace: true }
         }
-
     }
     document.title = to.meta.title + '-后台管理'
-
 })
 
 // 全局后置守卫

@@ -8,9 +8,11 @@
                 <el-aside :width=store.adsideWidth style="transition: 0.3s">
                     <adminAside></adminAside>
                 </el-aside>
-                <el-main>
+                <el-main class="flex flex-col">
                     <adminTag></adminTag>
-                    <router-view></router-view>
+                    <div class="main-content">
+                        <router-view></router-view>
+                    </div>
                 </el-main>
             </el-container>
         </el-container>
@@ -23,3 +25,10 @@ import adminTag from '@/components/adminTag.vue'
 import { useUserMsgStore } from '@/store/index'
 const store = useUserMsgStore()
 </script>
+<style>
+.main-content {
+    margin-top: 44px;
+    flex: 1;
+    @apply overflow-auto;
+}
+</style>
