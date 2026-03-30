@@ -19,7 +19,6 @@
                             </transition>
                         </router-view>
                     </div>
-
                 </el-main>
             </el-container>
         </el-container>

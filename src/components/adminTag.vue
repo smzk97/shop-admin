@@ -69,6 +69,7 @@ const remove = (e) => {
         }
     })
     editableTabsValue.value = activePath
+    router.push(activePath)
     editableTabs.value = editableTabs.value.filter(mid => mid.path != e)
 }
 const closeHandle = (e) => {
