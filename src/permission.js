@@ -33,13 +33,10 @@ router.beforeEach(async (to, from) => {
     let hasNewRoute = false
     if (token) {
         const useStore = useUserMsgStore()
-        if (Object.keys(useStore.user).length === 0) {
-            const data = await useStore.getInfoWrap()
-            const menus = data.data.menus
-            hasNewRoute = addRoutes(menus)
-            // return hasNewRoute ? { ...to, replace: true } : true
-            return { ...to, replace: true }
-        }
+        const data = await useStore.getInfoWrap()
+        const menus = data.data.menus
+        hasNewRoute = addRoutes(menus)
+        return hasNewRoute ? { ...to, replace: true } : true
     }
     document.title = to.meta.title + '-后台管理'
 })

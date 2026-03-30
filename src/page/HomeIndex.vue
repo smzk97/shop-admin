@@ -11,8 +11,15 @@
                 <el-main class="flex flex-col">
                     <adminTag></adminTag>
                     <div class="main-content">
-                        <router-view></router-view>
+                        <router-view v-slot="{ Component }">
+                            <transition name="animal" mode="out-in">
+                                <KeepAlive :max="10">
+                                    <component :is="Component"></component>
+                                </KeepAlive>
+                            </transition>
+                        </router-view>
                     </div>
+
                 </el-main>
             </el-container>
         </el-container>
@@ -30,5 +37,32 @@ const store = useUserMsgStore()
     margin-top: 44px;
     flex: 1;
     @apply overflow-auto;
+}
+
+.animal-enter-from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+}
+
+.animal-enter-to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+.animal-leave-from {
+    opacity: 1;
+}
+
+.animal-leave-to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+}
+
+.animal-enter-active,
+.animal-leave-active {
+    transition: opacity 0.3s ease;
 }
 </style>
